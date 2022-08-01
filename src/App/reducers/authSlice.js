@@ -1,14 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import User from "../../services/models/User";
-import { users } from "./usersSlice";
-import { useSelector } from "react-redux";
-import { authSignupService } from "../../services/authServices";
-import { newUserAdded } from "./usersSlice";
+import { authSignupService, getDataService } from "../../services/authServices";
+
 
 const defaultState = {
   User,
   isLoading: false,
   isAuthenticated: false,
+  isAlreadyExist: false
 };
 
 const authSlice = createSlice({
@@ -26,48 +25,67 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.User = null;
     },
+    setExistance: (state, action) => {
+      state.isAlreadyExist = action.payload;
+    }
   },
 });
 
 //REDUCER
 export default authSlice.reducer;
 //REDUCER ACTOINS
-export const { setLoading, signIn, signOut } = authSlice.actions;
+export const { setLoading, signIn, signOut, setExistance } = authSlice.actions;
 
 //SELECTORS
 export const isUserLoading = (state) => state.AuthReducer.isLoading;
+export const isUserAuthenticated = (state) => state.AuthReducer.isAuthenticated;
+
 
 //ACTOINS
-export const SignupAction = (userObj) => {
+export const SignupAction = (userObj) => async (dispatch, getState) => {
+  dispatch(setLoading(true));
+  // use redux state
+  const users = getState().UsersReducer.user
+
+  console.log({ users })
+  // some
+  // let isExist = userArray.some((user)=> user.email===userObj.email);
+  // for (const key in users) {
+  //   if (users[key].email === userObj.email) {
+  //     isExist = true;
+  //     break;
+  //   }
+  // }
+  let isExist = false
+
+  if (isExist) {
+    dispatch(setExistance(true));
+    console.log('User already exist')
+  }
+  else {
+    await authSignupService(userObj);
+  }
+
+  dispatch(setLoading(false));
+};
+
+export const SigninAction = (userObj) => {
   return async (dispatch) => {
+
     dispatch(setLoading(true));
-    const data = await authSignupService(userObj);
-    if (data) {
-      console.log(data);
+    const data = await getDataService();
+
+    for (const key in data) {
+      if (data[key].email === userObj.email && data[key].password === userObj.password) {
+        dispatch(signIn(userObj));
+      }
     }
-    dispatch(newUserAdded(userObj));
     dispatch(setLoading(false));
   };
 };
 
-export const SigninAction = (userObj) => {
-  const allUsers = useSelector(users);
-  const { email, password } = userObj;
-  const isUserExist = allUsers.find(
-    (user) => user.email === email && user.password === password
-  );
-
-  return isUserExist ? true : false;
-
-  // return async (dispatch) => {
-  //     dispatch(setLoading(true));
-  //     const data = await authSigninService(userObj);
-
-  //     if (data) {
-  //         console.log("use exist");
-  //     } else {
-  //         console.log("user does not exist");
-  //     }
-  //     dispatch(setLoading(false));
-  // };
-};
+export const SignoutAction = () => {
+  return async (dispatch) => {
+    dispatch(signOut(null));
+  }
+}

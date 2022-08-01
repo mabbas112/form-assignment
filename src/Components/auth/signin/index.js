@@ -1,40 +1,33 @@
 import { Fragment } from "react";
-import { useRef } from "react";
-import { users } from "../../../App/reducers/usersSlice";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import InputField from "../InputField";
+import { useFormik } from "formik";
+import { signinFormSchema, signinFormValidation } from "./signinFormValidation";
+import { SigninAction } from "../../../App/reducers/authSlice";
+import { useAppDispatch } from "../../../App/hooks";
+import { isUserAuthenticated } from "../../../App/reducers/authSlice";
+import { useSelector } from "react-redux";
+
 
 const SigninForm = () => {
-  const emailInputRef = useRef();
-  const passwordInputRef = useRef();
 
-  const allUsers = useSelector(users);
+  const dispatch = useAppDispatch();
+  const isAuthenticated = useSelector(isUserAuthenticated);
 
-  const submitHandler = (event) => {
-    event.preventDefault();
-    const enteredEmail = emailInputRef.current.value.trim();
-    const enteredPassword = passwordInputRef.current.value.trim();
 
-    if (!enteredEmail.includes("@") || enteredPassword.length < 1) return;
-
-    const isAccountExist = allUsers.find(
-      (user) => user.email === enteredEmail && user.password === enteredPassword
-    );
-
-    if (isAccountExist) {
-      console.log("signin");
-    } else {
-      console.log("Account does not exist");
+  const formik = useFormik({
+    initialValues: signinFormSchema,
+    validate: signinFormValidation,
+    onSubmit: (values) => {
+      dispatch(SigninAction(values));
+      formik.resetForm();
     }
+  });
 
-    emailInputRef.current.value = "";
-    passwordInputRef.current.value = "";
-  };
 
   return (
     <Fragment>
-      <form onSubmit={submitHandler}>
+      <form onSubmit={formik.handleSubmit}>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -43,17 +36,26 @@ const SigninForm = () => {
               </h3>
             </div>
             <div className="mb-4">
-
-              <InputField 
-                label="Email" 
-                inputName="email" 
-                inputType="email" 
+              <InputField
+                label="Email"
+                inputName="email"
+                inputType="email"
+                onChange={formik.handleChange}
+                value={formik.values.email}
               />
+              {formik.errors.email ? <div>{formik.errors.email}</div> : null}
+
               <InputField
                 label="Password"
                 inputName="password"
                 inputType="password"
+                onChange={formik.handleChange}
+                value={formik.values.password}
               />
+
+              {formik.errors.password ? (
+                <div>{formik.errors.password}</div>
+              ) : null}
 
               <Link to="/signup">
                 <div className="text-sm">
@@ -68,6 +70,7 @@ const SigninForm = () => {
               >
                 Sign in
               </button>
+              {isAuthenticated && <p>User is Authenticated</p>}
             </div>
           </div>
         </div>

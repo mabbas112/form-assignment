@@ -1,57 +1,34 @@
-import { Fragment, useRef } from "react";
+import { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { SignupAction, isUserLoading } from "../../../App/reducers/authSlice";
-import { users } from "../../../App/reducers/usersSlice";
 import { useAppDispatch } from "../../../App/hooks";
 import { Link } from "react-router-dom";
 import InputField from "../InputField";
+import { useFormik } from "formik";
+
+import { signupFormSchema, signupFormValidation } from "./signupFormValidation";
 
 const SignupForm = () => {
-  const emailInputRef = useRef();
-  const passwordInputRef = useRef();
-  const nameInputRef = useRef();
-
   const dispatch = useAppDispatch();
   const isLoading = useSelector(isUserLoading);
-  const allUsers = useSelector(users);
 
   const isLoadingMessage = isLoading && (
     <p style={{ color: "black" }}>Successfully created your acconut</p>
   );
+  console.log(isLoading);
 
-  const submitHandler = (event) => {
-    event.preventDefault();
-    const enteredName = nameInputRef.current.value.trim();
-    const enteredEmail = emailInputRef.current.value.trim();
-    const enteredPassword = passwordInputRef.current.value.trim();
-
-    const obj = {
-      uName: enteredName,
-      email: enteredEmail,
-      password: enteredPassword,
-    };
-
-    if (
-      !enteredEmail.includes("@") ||
-      enteredPassword.length < 1 ||
-      enteredName === ""
-    )
-      return;
-
-    const isUserExist = allUsers.find((user) => user.email === enteredEmail);
-
-    !isUserExist
-      ? dispatch(SignupAction(obj))
-      : console.log("User already exist");
-
-    nameInputRef.current.value = "";
-    emailInputRef.current.value = "";
-    passwordInputRef.current.value = "";
-  };
+  const formik = useFormik({
+    initialValues: signupFormSchema,
+    validate: signupFormValidation,
+    onSubmit: (values) => {
+      dispatch(SignupAction(values))
+      formik.resetForm();
+    },
+  });
 
   return (
     <Fragment>
-      <form onSubmit={submitHandler}>
+      <form onSubmit={formik.handleSubmit}>
         <div className="">
           <div className="space-y-6 sm:space-y-5">
             <div className="min-h-screen flex flex-col justify-center pb-12 sm:px-6 lg:px-8">
@@ -63,22 +40,42 @@ const SignupForm = () => {
 
               <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                  
+
                   <InputField
                     label="First Name"
-                    inputName="name"
+                    inputName="firstName"
                     inputType="text"
+                    onChange={formik.handleChange}
+                    value={formik.values.firstName}
                   />
+
+                  {formik.errors.firstName ? (
+                    <div>{formik.errors.firstName}</div>
+                  ) : null}
+
                   <InputField
                     label="Email"
                     inputName="email"
                     inputType="email"
+                    onChange={formik.handleChange}
+                    value={formik.values.email}
                   />
+
+                  {formik.errors.email ? (
+                    <div>{formik.errors.email}</div>
+                  ) : null}
+
                   <InputField
                     label="Password"
                     inputName="password"
                     inputType="password"
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
                   />
+
+                  {formik.errors.password ? (
+                    <div>{formik.errors.password}</div>
+                  ) : null}
 
                   <div className="flex items-center justify-between">
                     <div className="text-sm">

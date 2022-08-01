@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllUsersService } from "../../services/usersServices";
+import { setAllUsersService } from "../../services/usersServices";
 
 const defaultState = {
   users: [],
@@ -9,7 +9,7 @@ const usersSlice = createSlice({
   name: "usersReducer",
   initialState: defaultState,
   reducers: {
-    getAllUsers: (state, action) => {
+    setAllUsers: (state, action) => {
       state.users = action.payload;
     },
     addNewUser: (state, action) => {
@@ -19,18 +19,19 @@ const usersSlice = createSlice({
 });
 
 export default usersSlice.reducer;
-export const { getAllUsers, newUserAdded } = usersSlice.actions;
+export const { setAllUsers, newUserAdded } = usersSlice.actions;
 
 //SELECTORS
-export const users = (state) => state.UsersReducer.users;
+export const selectUsers = (state) => state.UsersReducer.users;
 
 //ACTIONS
 
-export const getUsersAction = () => async (dispatch) => {
-    const data = await getAllUsersService();
+export const setUsersAction = () => async (dispatch) => {
 
-    const dummyArray = [];
-    for (const key in data) dummyArray.push(data[key]);
-    dispatch(getAllUsers(dummyArray));
+  const data = await setAllUsersService();
+
+  const dummyArray = [];
+  for (const key in data) dummyArray.push(data[key]);
+  dispatch(setAllUsers(dummyArray));
 };
 
