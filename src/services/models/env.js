@@ -1,0 +1,1 @@
+export const firebaseURL = 'https://form-assign-256c1-default-rtdb.firebaseio.com/'
