@@ -1,25 +1,25 @@
 import { Fragment } from "react";
-import { useSelector } from "react-redux";
-import { SignupAction, isUserLoading } from "../../../App/reducers/authSlice";
-import { useAppDispatch } from "../../../App/hooks";
+import { SignupAction, selectIsUserExist } from "../../../App/reducers/authSlice";
+import { useAppDispatch, useAppSelector } from "../../../App/hooks";
 import { Link } from "react-router-dom";
 import InputField from "../InputField";
 import { useFormik } from "formik";
-
 import { signupFormSchema, signupFormValidation } from "./signupFormValidation";
 
 const SignupForm = () => {
-  const dispatch = useAppDispatch();
-  const isLoading = useSelector(isUserLoading);
 
-  const isLoadingMessage = isLoading && (
-    <p style={{ color: "black" }}>Successfully created your acconut</p>
+  const dispatch = useAppDispatch();
+  const isUserExist = useAppSelector(selectIsUserExist);
+
+  const isUserExistMessage = isUserExist && (
+    <p style={{ color: "black" }}>User already exist</p>
   );
+
   const formik = useFormik({
     initialValues: signupFormSchema,
     validate: signupFormValidation,
     onSubmit: (values) => {
-      dispatch(SignupAction(values))
+      dispatch(SignupAction(values));
       formik.resetForm();
     },
   });
@@ -38,7 +38,6 @@ const SignupForm = () => {
 
               <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-
                   <InputField
                     label="First Name"
                     inputName="firstName"
@@ -93,8 +92,11 @@ const SignupForm = () => {
                   >
                     Sign up
                   </button>
-                  {isLoadingMessage}
+
+                  
+
                 </div>
+                {isUserExistMessage}
               </div>
             </div>
           </div>

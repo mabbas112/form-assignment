@@ -7,18 +7,18 @@ export const authSignupService = async (userObj) => {
       firebaseURL + "/user.json",
       userObj
     );
-    return data;
+    return Promise.resolve(data);
 
   } catch (error) {
-    console.log("Could not send");
+    return Promise.resolve(null)
   }
 };
 
 export const authSigninService = async () => {
   try {
     const { data, status } = await axios.get(firebaseURL + "/user.json");
-    if (status === 200) return data;
+    if (status === 200) return Promise.resolve(data);
   } catch (error) {
-    console.log("Could not Get");
+    return Promise.resolve(null)
   }
 };

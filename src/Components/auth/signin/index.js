@@ -4,16 +4,16 @@ import InputField from "../InputField";
 import { useFormik } from "formik";
 import { signinFormSchema, signinFormValidation } from "./signinFormValidation";
 import { SigninAction } from "../../../App/reducers/authSlice";
-import { useAppDispatch } from "../../../App/hooks";
-import { isUserAuthenticated } from "../../../App/reducers/authSlice";
-import { useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../../App/hooks";
+import { selectIsUserAuthenticated } from "../../../App/reducers/authSlice";
 
 
 const SigninForm = () => {
 
-  const dispatch = useAppDispatch();
-  const isAuthenticated = useSelector(isUserAuthenticated);
+  
 
+  const dispatch = useAppDispatch();
+  const isAuthenticated = useAppSelector(selectIsUserAuthenticated);
 
   const formik = useFormik({
     initialValues: signinFormSchema,

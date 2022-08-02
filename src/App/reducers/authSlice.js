@@ -3,12 +3,11 @@ import User from "../../services/models/User";
 import { authSignupService } from "../../services/authServices";
 import { addNewUser } from "./usersSlice";
 
-
 const defaultState = {
   User,
   isLoading: false,
   isAuthenticated: false,
-  isAlreadyExist: false
+  isUserExist: false,
 };
 
 const authSlice = createSlice({
@@ -26,58 +25,60 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.User = null;
     },
-    setExistance: (state, action) => {
-      state.isAlreadyExist = action.payload;
-    }
+    setIsUserExist: (state, action) => {
+      state.isUserExist = action.payload;
+    },
+
   },
 });
 
 //REDUCER
 export default authSlice.reducer;
 //REDUCER ACTOINS
-export const { setLoading, signIn, signOut, setExistance } = authSlice.actions;
+export const { setLoading, signIn, signOut, setIsUserExist } =
+  authSlice.actions;
 
 //SELECTORS
-export const isUserLoading = (state) => state.AuthReducer.isLoading;
-export const isUserAuthenticated = (state) => state.AuthReducer.isAuthenticated;
-
+export const selectIsUserLoading = (state) => state.AuthReducer.isLoading;
+export const selectIsUserAuthenticated = (state) => state.AuthReducer.isAuthenticated;
+export const selectIsUserExist = (state) => state.AuthReducer.isUserExist;
 
 //ACTOINS
 export const SignupAction = (userObj) => async (dispatch, getState) => {
 
   dispatch(setLoading(true));
-
-  const users = getState().UsersReducer.users
-  let isExist = users.some((user) => user.email === userObj.email);
-
-  if (isExist) {
-    dispatch(setExistance(true));
-    console.log('User already exist')
-  }
-  else {
+  const users = getState().UsersReducer.users;
+  const isExist = users.some((user) => user.email === userObj.email);
+  if (!isExist) {
     await authSignupService(userObj);
     dispatch(addNewUser(userObj));
+    dispatch(setIsUserExist(false));
+  } else {
+    dispatch(setIsUserExist(true));
   }
-
   dispatch(setLoading(false));
 };
 
 export const SigninAction = (userObj) => async (dispatch, getState) => {
 
   dispatch(setLoading(true));
-  const users = getState().UsersReducer.users
-  let isExist = users.some((user) => user.email === userObj.email && user.password === userObj.password)
-  if (isExist)
+  const users = getState().UsersReducer.users;
+  const isExist = users.some(
+    (user) => user.email === userObj.email && user.password === userObj.password
+  );
+  if (isExist) {
     dispatch(signIn(userObj));
-  else {
-    console.log('User does not exist')
+   
   }
-  dispatch(setLoading(false));
+  else {
+    
+  }
 
+  dispatch(setLoading(false));
 };
 
 export const SignoutAction = () => {
   return async (dispatch) => {
     dispatch(signOut(null));
-  }
-}
+  };
+};

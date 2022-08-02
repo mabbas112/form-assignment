@@ -1,15 +1,17 @@
 import { Fragment, useEffect } from "react";
 import SignupForm from "./Components/auth/signup";
 // import Header from "./Components/header";
-import { useAppDispatch } from "./App/hooks";
+import { useAppDispatch, useAppSelector } from "./App/hooks";
 import { setUsersAction } from "./App/reducers/usersSlice";
-import { Route, Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import SigninForm from "./Components/auth/signin";
-import { useSelector } from "react-redux";
-import { isUserAuthenticated, SignoutAction } from "./App/reducers/authSlice";
+import { selectIsUserAuthenticated, SignoutAction } from "./App/reducers/authSlice";
+import AdminSigninForm from "./Components/admin/auth/signin";
+
+
 function App() {
   const dispatch = useAppDispatch();
-  const isAuthenticated = useSelector(isUserAuthenticated);
+  const isAuthenticated = useAppSelector(selectIsUserAuthenticated);
 
   useEffect(() => {
     dispatch(setUsersAction());
@@ -22,18 +24,15 @@ function App() {
   return (
     <Fragment>
       {/* <Header /> */}
+
       {isAuthenticated && <button onClick={signoutHandler}>Sign out</button>}
-      <Switch>
+      <Routes>
+        <Route path="/admin" element={<AdminSigninForm />} />
+            
+        <Route path="/signup" exact element={<SignupForm />} />
+        <Route path="/signin" exact element={<SigninForm />} />
 
-        <Route path="/signup" exact>
-          <SignupForm />
-        </Route>
-
-        <Route path="/signin" exact>
-          <SigninForm />
-        </Route>
-
-      </Switch>
+      </Routes>
     </Fragment>
   );
 }
