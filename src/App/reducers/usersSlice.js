@@ -19,7 +19,7 @@ const usersSlice = createSlice({
 });
 
 export default usersSlice.reducer;
-export const { setAllUsers, newUserAdded } = usersSlice.actions;
+export const { setAllUsers, addNewUser } = usersSlice.actions;
 
 //SELECTORS
 export const selectUsers = (state) => state.UsersReducer.users;

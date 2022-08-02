@@ -15,8 +15,6 @@ const SignupForm = () => {
   const isLoadingMessage = isLoading && (
     <p style={{ color: "black" }}>Successfully created your acconut</p>
   );
-  console.log(isLoading);
-
   const formik = useFormik({
     initialValues: signupFormSchema,
     validate: signupFormValidation,

@@ -22,12 +22,3 @@ export const authSigninService = async () => {
     console.log("Could not Get");
   }
 };
-
-export const getDataService = async () => {
-  try {
-    const { data } = await axios.get(firebaseURL + "/user.json")
-    return data;
-  } catch (error) {
-    console.log('Could not get error');
-  }
-}

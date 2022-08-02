@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import User from "../../services/models/User";
-import { authSignupService, getDataService } from "../../services/authServices";
+import { authSignupService } from "../../services/authServices";
+import { addNewUser } from "./usersSlice";
 
 
 const defaultState = {
@@ -43,20 +44,11 @@ export const isUserAuthenticated = (state) => state.AuthReducer.isAuthenticated;
 
 //ACTOINS
 export const SignupAction = (userObj) => async (dispatch, getState) => {
-  dispatch(setLoading(true));
-  // use redux state
-  const users = getState().UsersReducer.user
 
-  console.log({ users })
-  // some
-  // let isExist = userArray.some((user)=> user.email===userObj.email);
-  // for (const key in users) {
-  //   if (users[key].email === userObj.email) {
-  //     isExist = true;
-  //     break;
-  //   }
-  // }
-  let isExist = false
+  dispatch(setLoading(true));
+
+  const users = getState().UsersReducer.users
+  let isExist = users.some((user) => user.email === userObj.email);
 
   if (isExist) {
     dispatch(setExistance(true));
@@ -64,24 +56,24 @@ export const SignupAction = (userObj) => async (dispatch, getState) => {
   }
   else {
     await authSignupService(userObj);
+    dispatch(addNewUser(userObj));
   }
 
   dispatch(setLoading(false));
 };
 
-export const SigninAction = (userObj) => {
-  return async (dispatch) => {
+export const SigninAction = (userObj) => async (dispatch, getState) => {
 
-    dispatch(setLoading(true));
-    const data = await getDataService();
+  dispatch(setLoading(true));
+  const users = getState().UsersReducer.users
+  let isExist = users.some((user) => user.email === userObj.email && user.password === userObj.password)
+  if (isExist)
+    dispatch(signIn(userObj));
+  else {
+    console.log('User does not exist')
+  }
+  dispatch(setLoading(false));
 
-    for (const key in data) {
-      if (data[key].email === userObj.email && data[key].password === userObj.password) {
-        dispatch(signIn(userObj));
-      }
-    }
-    dispatch(setLoading(false));
-  };
 };
 
 export const SignoutAction = () => {
