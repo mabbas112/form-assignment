@@ -52,10 +52,9 @@ export const SignupAction = (userObj) => async (dispatch, getState) => {
   if (!isExist) {
     await authSignupService(userObj);
     dispatch(addNewUser(userObj));
-    dispatch(setIsUserExist(false));
-  } else {
-    dispatch(setIsUserExist(true));
   }
+
+  dispatch(setIsUserExist(isExist));
   dispatch(setLoading(false));
 };
 
@@ -66,19 +65,12 @@ export const SigninAction = (userObj) => async (dispatch, getState) => {
   const isExist = users.some(
     (user) => user.email === userObj.email && user.password === userObj.password
   );
-  if (isExist) {
-    dispatch(signIn(userObj));
-   
-  }
-  else {
-    
-  }
+  isExist && dispatch(signIn(userObj));
 
   dispatch(setLoading(false));
 };
 
-export const SignoutAction = () => {
-  return async (dispatch) => {
-    dispatch(signOut(null));
-  };
+export const SignoutAction = () => async (dispatch) => {
+  dispatch(signOut(null));
 };
+
