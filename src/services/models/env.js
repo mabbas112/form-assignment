@@ -1,1 +1,0 @@
-export const firebaseURL = 'https://estore-f25b3-default-rtdb.firebaseio.com/'

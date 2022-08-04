@@ -1,11 +1,12 @@
-import axios from "axios";
-import { firebaseURL } from "./models/env";
+import http from "./httpServices";
+import { userApi } from "./constants/constants";
+import { firebaseURL } from "./constants/constants";
 
 export const setAllUsersService = async () => {
   try {
-    const { data } = await axios.get(firebaseURL + "user.json");
+    const { data } = await http.get(firebaseURL + userApi);
     return Promise.resolve(data);
   } catch (error) {
-    return "";
+    return Promise.resolve(null);
   }
 };

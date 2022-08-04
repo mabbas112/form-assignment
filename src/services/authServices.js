@@ -1,14 +1,11 @@
-import axios from "axios";
-import { firebaseURL } from "./models/env";
+import http from "./httpServices";
+import { firebaseURL } from "./constants/constants";
+import { userApi } from "./constants/constants";
 
 export const authSignupService = async (userObj) => {
   try {
-    const { data } = await axios.post(
-      firebaseURL + "/user.json",
-      userObj
-    );
+    const { data } = await http.post(firebaseURL + userApi, userObj);
     return Promise.resolve(data);
-
   } catch (error) {
     return Promise.resolve(null)
   }
@@ -16,7 +13,7 @@ export const authSignupService = async (userObj) => {
 
 export const authSigninService = async () => {
   try {
-    const { data } = await axios.get(firebaseURL + "/user.json");
+    const { data } = await http.get(firebaseURL + userApi);
     return data;
   } catch (error) {
     return Promise.resolve(null)

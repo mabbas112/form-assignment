@@ -1,10 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import User from "../../services/models/User";
 import { authSignupService } from "../../services/authServices";
 import { addNewUser } from "./usersSlice";
 
+const defaultUser = {
+  uName: '',
+  email: '',
+  password: '',
+};
+
 const defaultState = {
-  User,
+  defaultUser,
   isLoading: false,
   isAuthenticated: false,
   isUserExist: false,
@@ -66,8 +71,8 @@ export const SigninAction = (userObj) => async (dispatch, getState) => {
     (user) => user.email === userObj.email && user.password === userObj.password
   );
   isExist && dispatch(signIn(userObj));
-
   dispatch(setLoading(false));
+  
 };
 
 export const SignoutAction = () => async (dispatch) => {
