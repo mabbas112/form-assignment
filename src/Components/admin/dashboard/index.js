@@ -1,49 +1,41 @@
 import { Fragment, useState } from "react";
 import { useNavigate, Outlet, useParams } from "react-router-dom";
 import classes from '../../../assets/styles/admin/categories/AdminDashboard.module.css'
-import NewProductBtn from "./addProductBtn";
-import NewProductForm from "./newProductForm";
-import { addProductAction } from "../../../App/reducers/productsSlice";
-import { useAppDispatch, useAppSelector } from "../../../App/hooks";
-import { selectCategories, setAddCategoryAction } from "../../../App/reducers/categorySlice";
-import NewCategoryForm from "./newCategoryForm";
+import { useAppSelector } from "../../../App/hooks";
+import { selectCategories } from "../../../App/reducers/categorySlice";
+import NewProductBtn from "./products/addProductBtn";
+import NewProductForm from "./products/newProductForm";
+import NewCategoryForm from "./categories/newCategoryForm";
+import { selectCartItem } from "../../../App/reducers/cartSlice";
+import Cart from "./cart";
+
 
 const AdminDashboard = () => {
 
     const { category } = useParams();
-    const dispatch = useAppDispatch();
     const categories = useAppSelector(selectCategories);
+    const cartItem = useAppSelector(selectCartItem)
     const navigate = useNavigate();
     const [toggleProductForm, setToggleProductForm] = useState(false);
     const [toggleCategoryForm, setToggleCategoryForm] = useState(false);
-
-
-
-
-
-    const addProduct = (product) => {
-        dispatch(addProductAction({ ...product, category: category }));
-        setToggleProductForm(preState => !preState);
-    }
-    const addCategory = (category) => {
-        dispatch(setAddCategoryAction(category));
-        setToggleCategoryForm(preState => !preState);
-    }
-
-
+    const [toggleCart, setToggleCart] = useState(false);
 
     const displayCategory = categories.map((category) =>
         <li key={category.id} onClick={() => {
             navigate('/admin/' + category.name)
         }}>{category.name}</li>
     )
-    
+
+    // const totalCartItems = cartItem.reduce((totalAmount, curObj) => (totalAmount + curObj.amount), 0)
 
     const toggleProductFormHandler = () => {
         setToggleProductForm(preState => !preState);
     }
     const toggleCategoryFormHandler = () => {
         setToggleCategoryForm(preState => !preState);
+    }
+    const toggleCartHandler = () => {
+        setToggleCart(preState => !preState);
     }
 
     return (
@@ -53,13 +45,20 @@ const AdminDashboard = () => {
                     <ul>
                         {displayCategory}
                         <button className={classes.button} onClick={toggleCategoryFormHandler}>Add Category</button>
+
                     </ul>
                 </nav>
+                <span onClick={toggleCartHandler}>{`Cart ${cartItem.length}`}</span>
             </header>
-            {toggleCategoryForm && <NewCategoryForm addCategory={addCategory} />}
+
+            {toggleCategoryForm && <NewCategoryForm toggleForm={toggleCategoryFormHandler} />}
             {category && <NewProductBtn onClick={toggleProductFormHandler} />}
-            {toggleProductForm && <NewProductForm addProduct={addProduct} />}
+            {toggleProductForm && <NewProductForm toggleForm={toggleProductFormHandler} />}
+
             <Outlet />
+
+            {toggleCart && <Cart />}
+
         </Fragment>
     )
 }

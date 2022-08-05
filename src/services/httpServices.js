@@ -1,7 +1,9 @@
 import axios from "axios";
+import { firebaseURL } from './constants/constants'
 
 
 
+axios.defaults.baseURL = firebaseURL;
 
 
 const http = {

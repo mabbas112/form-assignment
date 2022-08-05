@@ -8,7 +8,7 @@ import { selectIsUserAuthenticated, SignoutAction } from "./App/reducers/authSli
 import AdminSigninForm from "./Components/admin/auth/signin";
 import { setProductAction } from "./App/reducers/productsSlice";
 import { setCategoriesAction } from "./App/reducers/categorySlice";
-import ShowCategoryProduct from "./Components/admin/dashboard/showCategoryProducts";
+import ShowCategoryProduct from "./Components/admin/dashboard/categories/showCategoryProducts";
 // import Header from "./Components/header";
 
 function App() {

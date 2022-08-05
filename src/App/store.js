@@ -4,6 +4,7 @@ import UsersReducer from './reducers/usersSlice'
 import AdminReducer from './reducers/admin/authSlice'
 import ProductReducer from './reducers/productsSlice'
 import CategoriesReducer from './reducers/categorySlice'
+import CartReducer from './reducers/cartSlice'
 
 const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
     UsersReducer,
     AdminReducer,
     ProductReducer,
-    CategoriesReducer
+    CategoriesReducer,
+    CartReducer
   },
 });
 
