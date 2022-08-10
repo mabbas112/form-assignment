@@ -8,7 +8,11 @@ import { selectIsUserAuthenticated, SignoutAction } from "./App/reducers/authSli
 import AdminSigninForm from "./Components/admin/auth/signin";
 import { setProductAction } from "./App/reducers/productsSlice";
 import { setCategoriesAction } from "./App/reducers/categorySlice";
-import ShowCategoryProduct from "./Components/admin/dashboard/categories/showCategoryProducts";
+import Categories from "./Components/admin/dashboard/categories";
+import NewCategoryForm from "./Components/admin/dashboard/categories/newCategoryForm";
+import NewProductForm from "./Components/admin/dashboard/products/newProductForm";
+import Products from "./Components/admin/dashboard/products";
+import Dashboard from "./Components/admin/dashboard";
 // import Header from "./Components/header";
 
 function App() {
@@ -36,8 +40,14 @@ function App() {
       <Routes>
 
         <Route path="/admin" element={<AdminSigninForm />}>
-          <Route path=":category" element={<ShowCategoryProduct />} />
+          <Route path="categories" element={<Categories />} />
+          <Route path="newcategory" element={<NewCategoryForm />} />
+          <Route path="products" element={<Products />} />
+          <Route path="newproduct" element={<NewProductForm />} />
+          <Route path="*" element={<Dashboard/>}/>
         </Route>
+
+
         <Route path="/signup" exact element={<SignupForm />} />
         <Route path="/signin" exact element={<SigninForm />} />
 

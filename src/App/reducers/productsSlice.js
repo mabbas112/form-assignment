@@ -33,11 +33,13 @@ export const { setIsLoading, setProducts, setNewProduct } = productsSlice.action
 //SELECTOR
 export const selectProducts = (state) => state.ProductReducer.products;
 export const selectIsLoading = (state) => state.ProductReducer.isLoading;
+
+
 //ACTION CREATOR
 export const addProductAction = (product) => async (dispatch) => {
     dispatch(setIsLoading(true))
     const data = await addProductService(product);
-    dispatch(setNewProduct({...product,id:data.name}))
+    dispatch(setNewProduct({ ...product, id: data.name }))
     dispatch(setIsLoading(false))
 }
 
@@ -47,6 +49,7 @@ export const setProductAction = () => async (dispatch) => {
     dispatch(setProducts(transformIntoProduct(data)));
     dispatch(setIsLoading(false));
 }
+
 
 
 const transformIntoProduct = (data) => {

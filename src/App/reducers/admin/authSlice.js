@@ -5,7 +5,7 @@ import { AdminSigninService } from "../../../services/admin/authService";
 
 const defaultState = {
     admin: {
-        email: '', 
+        email: '',
         password: ''
     },
     isAuthenticated: false,
@@ -20,10 +20,10 @@ const authSlice = createSlice({
             state.isLoading = action.payload;
         },
         setSignIn: (state, action) => {
-            state.isAuthenticated = action.payload
+            state.isAuthenticated = true;
         },
         setSignOut: (state, action) => {
-            state.isAuthenticated = action.payload
+            state.isAuthenticated = false;
         },
     }
 })

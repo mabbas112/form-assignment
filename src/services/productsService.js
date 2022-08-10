@@ -9,11 +9,9 @@ export const addProductService = async (product) => {
         return Promise.resolve(null);
     }
 }
-
-
 export const setProductsService = async () => {
     try {
-        const { data } = await http.get(productsApi );
+        const { data } = await http.get(productsApi);
         return Promise.resolve(data);
     } catch (error) {
         return Promise.resolve(null);

@@ -1,65 +1,54 @@
-import { Fragment, useState } from "react";
-import { useNavigate, Outlet, useParams } from "react-router-dom";
-import classes from '../../../assets/styles/admin/categories/AdminDashboard.module.css'
-import { useAppSelector } from "../../../App/hooks";
-import { selectCategories } from "../../../App/reducers/categorySlice";
-import NewProductBtn from "./products/addProductBtn";
-import NewProductForm from "./products/newProductForm";
-import NewCategoryForm from "./categories/newCategoryForm";
-import { selectCartItem } from "../../../App/reducers/cartSlice";
-import Cart from "./cart";
+import { Fragment } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../../App/hooks";
+import { setSignOut } from "../../../App/reducers/admin/authSlice";
 
+const btnStyle = {
+    padding: 10, border: "1px solid black", margin: 20, borderRadius: 15
+}
+const Dashboard = () => {
 
-const AdminDashboard = () => {
-
-    const { category } = useParams();
-    const categories = useAppSelector(selectCategories);
-    const cartItem = useAppSelector(selectCartItem)
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const [toggleProductForm, setToggleProductForm] = useState(false);
-    const [toggleCategoryForm, setToggleCategoryForm] = useState(false);
-    const [toggleCart, setToggleCart] = useState(false);
-
-    const displayCategory = categories.map((category) =>
-        <li key={category.id} onClick={() => {
-            navigate('/admin/' + category.name)
-        }}>{category.name}</li>
-    )
-
-    // const totalCartItems = cartItem.reduce((totalAmount, curObj) => (totalAmount + curObj.amount), 0)
-
-    const toggleProductFormHandler = () => {
-        setToggleProductForm(preState => !preState);
-    }
-    const toggleCategoryFormHandler = () => {
-        setToggleCategoryForm(preState => !preState);
-    }
-    const toggleCartHandler = () => {
-        setToggleCart(preState => !preState);
-    }
 
     return (
         <Fragment>
-            <header className={classes.header}>
-                <nav>
-                    <ul>
-                        {displayCategory}
-                        <button className={classes.button} onClick={toggleCategoryFormHandler}>Add Category</button>
+            <button
+                style={btnStyle}
+                onClick={()=> dispatch(setSignOut())}
+            >
+                Sign Out
+            </button>
 
-                    </ul>
-                </nav>
-                <span onClick={toggleCartHandler}>{`Cart ${cartItem.length}`}</span>
-            </header>
+            <button
+                style={btnStyle}
+                onClick={() => navigate('/admin/newcategory')}
+            >
+                Add Category
+            </button>
 
-            {toggleCategoryForm && <NewCategoryForm toggleForm={toggleCategoryFormHandler} />}
-            {category && <NewProductBtn onClick={toggleProductFormHandler} />}
-            {toggleProductForm && <NewProductForm toggleForm={toggleProductFormHandler} />}
+            <button
+                style={btnStyle}
+                onClick={() => navigate('/admin/categories')}
+            >
+                Show Categories
+            </button>
 
+            <button
+                style={btnStyle}
+                onClick={() => navigate('/admin/products')}
+            >
+                Show Products
+            </button>
+
+            <button
+                style={btnStyle}
+                onClick={() => navigate('/admin/newproduct')}
+            >
+                Add Products
+            </button>
             <Outlet />
-
-            {toggleCart && <Cart />}
-
         </Fragment>
     )
 }
-export default AdminDashboard;
+export default Dashboard;

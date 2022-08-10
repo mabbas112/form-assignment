@@ -1,11 +1,11 @@
-import { Fragment } from "react"
+import { Fragment, useEffect } from "react"
 import InputField from "../../../auth/InputField";
 import { useFormik } from "formik";
 import { AdminSigninFormValidation } from "./signinFormValidation";
 import { useAppDispatch, useAppSelector } from "../../../../App/hooks";
 import { AdminSigninAction } from "../../../../App/reducers/admin/authSlice";
 import { selectIsAuthenticated } from "../../../../App/reducers/admin/authSlice";
-import AdminDashboard from "../../dashboard";
+import Dashboard from "../../dashboard";
 
 
 const AdminSigninForm = () => {
@@ -25,6 +25,10 @@ const AdminSigninForm = () => {
             formik.resetForm();
         }
     });
+
+    useEffect(()=>{
+        
+    },[])
 
 
     return (
@@ -70,8 +74,10 @@ const AdminSigninForm = () => {
                 </form>
             }
             {
-                isAuthenticated && <AdminDashboard/>
+                isAuthenticated && <Dashboard/>
+                
             }
+            
         </Fragment>
     )
 }
