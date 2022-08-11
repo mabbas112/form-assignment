@@ -19,8 +19,12 @@ const categorySlice = createSlice({
             state.categories = state.categories.filter((category) => category.id !== action.payload.id)
         },
         editCategory: (state, action) => {
-            const filteredCategories = state.categories.filter((category) => category.id !== action.payload.id)
-            state.categories=[...filteredCategories, action.payload];
+            state.categories = state.categories.map((category) => {
+                if (category.id === action.payload.id)
+                    return action.payload;
+                else
+                    return category;
+            })
         }
     }
 

@@ -10,9 +10,8 @@ import { setProductAction } from "./App/reducers/productsSlice";
 import { setCategoriesAction } from "./App/reducers/categorySlice";
 import Categories from "./Components/admin/dashboard/categories";
 import NewCategoryForm from "./Components/admin/dashboard/categories/newCategoryForm";
-import NewProductForm from "./Components/admin/dashboard/products/newProductForm";
+import ProductForm from "./Components/admin/dashboard/products/productForm";
 import Products from "./Components/admin/dashboard/products";
-// import Header from "./Components/header";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -33,19 +32,18 @@ function App() {
 
   return (
     <Fragment>
-      {/* <Header /> */}
-
       {isAuthenticated && <button onClick={signoutHandler}>Sign out</button>}
       <Routes>
 
+        {/* ADMIN ROUTES */}
         <Route path="/admin" element={<AdminSigninForm />}>
           <Route path="categories" element={<Categories />} />
           <Route path="newcategory" element={<NewCategoryForm />} />
           <Route path="products" element={<Products />} />
-          <Route path="newproduct" element={<NewProductForm />} />
+          <Route path="products/:productid" element={<ProductForm />} />
+          <Route path="newproduct" element={<ProductForm />} />
           <Route path="*" element={<h1>Page not found</h1>} />
         </Route>
-
 
         <Route path="/signup" exact element={<SignupForm />} />
         <Route path="/signin" exact element={<SigninForm />} />

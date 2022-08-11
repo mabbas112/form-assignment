@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addProductService, setProductsService } from "../../services/productsService";
+import { addProductService, setProductsService, editProductService, deleteProductService } from "../../services/productsService";
 
 const defaultState = {
     products: [],
@@ -20,8 +20,15 @@ const productsSlice = createSlice({
         setNewProduct: (state, action) => {
             state.products = [...state.products, action.payload]
         },
-        setProductId: (state, action) => {
-            state.productId = state.productId + 1;
+        editProduct: (state, action) => {
+            state.products = state.products.map((product) => {
+                if (product.id === action.payload.id)
+                    return action.payload
+                else return product;
+            })
+        },
+        deleteProduct: (state, action) => {
+            state.products = [...state.products.filter((product) => product.id !== action.payload.id)]
         }
     }
 })
@@ -29,7 +36,7 @@ const productsSlice = createSlice({
 //REDUCER
 export default productsSlice.reducer;
 //REDUCER FUNCTIONS
-export const { setIsLoading, setProducts, setNewProduct } = productsSlice.actions;
+export const { setIsLoading, setProducts, setNewProduct, editProduct, deleteProduct } = productsSlice.actions;
 //SELECTOR
 export const selectProducts = (state) => state.ProductReducer.products;
 export const selectIsLoading = (state) => state.ProductReducer.isLoading;
@@ -49,7 +56,14 @@ export const setProductAction = () => async (dispatch) => {
     dispatch(setProducts(transformIntoProduct(data)));
     dispatch(setIsLoading(false));
 }
-
+export const editProductAction = (product) => async (dispatch) => {
+    await editProductService(product);
+    dispatch(editProduct(product));
+}
+export const deleteProductAction = (product) => async (dispatch) => {
+    await deleteProductService(product);
+    dispatch(deleteProduct(product));
+}
 
 
 const transformIntoProduct = (data) => {

@@ -9,7 +9,7 @@ const defaultUser = {
 };
 
 const defaultState = {
-  defaultUser,
+  user: defaultUser,
   isLoading: false,
   isAuthenticated: false,
   isUserExist: false,
@@ -23,12 +23,12 @@ const authSlice = createSlice({
       state.isLoading = action.payload;
     },
     signIn: (state, action) => {
-      state.User = action.payload;
+      state.user = action.payload;
       state.isAuthenticated = true;
     },
     signOut: (state, action) => {
       state.isAuthenticated = false;
-      state.User = null;
+      state.user = null;
     },
     setIsUserExist: (state, action) => {
       state.isUserExist = action.payload;
