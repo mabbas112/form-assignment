@@ -12,7 +12,6 @@ import Categories from "./Components/admin/dashboard/categories";
 import NewCategoryForm from "./Components/admin/dashboard/categories/newCategoryForm";
 import NewProductForm from "./Components/admin/dashboard/products/newProductForm";
 import Products from "./Components/admin/dashboard/products";
-import Dashboard from "./Components/admin/dashboard";
 // import Header from "./Components/header";
 
 function App() {
@@ -44,7 +43,6 @@ function App() {
           <Route path="newcategory" element={<NewCategoryForm />} />
           <Route path="products" element={<Products />} />
           <Route path="newproduct" element={<NewProductForm />} />
-          <Route path="*" element={<Dashboard/>}/>
         </Route>
 
 

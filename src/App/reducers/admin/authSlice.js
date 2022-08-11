@@ -20,10 +20,13 @@ const authSlice = createSlice({
             state.isLoading = action.payload;
         },
         setSignIn: (state, action) => {
-            state.isAuthenticated = true;
+            const {isAdmin , adminObj} = action.payload;
+            state.isAuthenticated = isAdmin;
+            state.admin = adminObj;
         },
         setSignOut: (state, action) => {
             state.isAuthenticated = false;
+            state.admin = null;
         },
     }
 })
@@ -36,13 +39,13 @@ export default authSlice.reducer;
 export const { setLoading, setSignIn, setSignOut } = authSlice.actions;
 
 //SELECTORS
-export const selectIsAuthenticated = (state) => state.AdminReducer.isAuthenticated;
-export const selectAdmin = (state) => state.AdminReducer.admin;
+export const selectIsAuthenticated = (state) => state.persistedReducer.isAuthenticated;
+export const selectAdmin = (state) => state.persistedReducer.admin;
 
 //ACTOIN CREATORS
 export const AdminSigninAction = (adminObj) => async (dispatch) => {
     const data = await AdminSigninService();
     const isAdmin = data.email === adminObj.email && data.password === adminObj.password;
-    dispatch(setSignIn(isAdmin));
+    dispatch(setSignIn({isAdmin,adminObj}));
 }
 

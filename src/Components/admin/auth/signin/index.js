@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react"
+import { Fragment } from "react"
 import InputField from "../../../auth/InputField";
 import { useFormik } from "formik";
 import { AdminSigninFormValidation } from "./signinFormValidation";
@@ -25,11 +25,6 @@ const AdminSigninForm = () => {
             formik.resetForm();
         }
     });
-
-    useEffect(()=>{
-        
-    },[])
-
 
     return (
         <Fragment>
@@ -74,10 +69,10 @@ const AdminSigninForm = () => {
                 </form>
             }
             {
-                isAuthenticated && <Dashboard/>
-                
+                isAuthenticated && <Dashboard />
+
             }
-            
+
         </Fragment>
     )
 }
