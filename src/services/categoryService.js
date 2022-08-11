@@ -1,5 +1,8 @@
 import http from "./httpServices";
-import { categoriesApi } from "./constants/constants";
+import { categoriesApi, categoryApi } from "./constants/constants";
+
+
+const categoryId = (category) => categoryApi + category.id + '.json';
 
 export const setCategoriesService = async () => {
     try {
@@ -20,7 +23,7 @@ export const setAddCategoryService = async (category) => {
 }
 export const deleteCategoryService = async (category) => {
     try {
-        const { data } = await http.delete('https://estore-f25b3-default-rtdb.firebaseio.com/categories/' + category.id + '.json');
+        const { data } = await http.delete(categoryId(category));
         return Promise.resolve(data);
     } catch (error) {
         return Promise.resolve(null)
@@ -28,7 +31,7 @@ export const deleteCategoryService = async (category) => {
 }
 export const editCategoryService = async (category) => {
     try {
-        const { data } = await http.put('https://estore-f25b3-default-rtdb.firebaseio.com/categories/' + category.id + '.json', { name: category.name });
+        const { data } = await http.put(categoryId(category), { name: category.name });
         return Promise.resolve(data);
     } catch (error) {
         return Promise.resolve(null)

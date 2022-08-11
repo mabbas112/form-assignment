@@ -43,6 +43,7 @@ function App() {
           <Route path="newcategory" element={<NewCategoryForm />} />
           <Route path="products" element={<Products />} />
           <Route path="newproduct" element={<NewProductForm />} />
+          <Route path="*" element={<h1>Page not found</h1>} />
         </Route>
 
 

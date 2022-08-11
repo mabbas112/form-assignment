@@ -43,17 +43,19 @@ const AdminSigninForm = () => {
                                     inputName="email"
                                     inputType="text"
                                     onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
                                     value={formik.values.email}
                                 />
-                                {formik.errors.email ? <div>{formik.errors.email}</div> : null}
+                                {(formik.errors.email && formik.touched.email) ? <div>{formik.errors.email}</div> : null}
                                 <InputField
                                     label="Password"
                                     inputName="password"
                                     inputType="text"
+                                    onBlur={formik.handleBlur}
                                     onChange={formik.handleChange}
                                     value={formik.values.password}
                                 />
-                                {formik.errors.password ? (
+                                {(formik.errors.password && formik.touched.password) ? (
                                     <div>{formik.errors.password}</div>
                                 ) : null}
 

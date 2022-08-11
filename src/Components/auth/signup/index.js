@@ -42,11 +42,12 @@ const SignupForm = () => {
                     label="First Name"
                     inputName="firstName"
                     inputType="text"
+                    onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
                     value={formik.values.firstName}
                   />
 
-                  {formik.errors.firstName ? (
+                  {(formik.errors.firstName && formik.touched.firstName) ? (
                     <div>{formik.errors.firstName}</div>
                   ) : null}
 
@@ -54,11 +55,12 @@ const SignupForm = () => {
                     label="Email"
                     inputName="email"
                     inputType="email"
+                    onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
                     value={formik.values.email}
                   />
 
-                  {formik.errors.email ? (
+                  {(formik.errors.email && formik.touched.email) ? (
                     <div>{formik.errors.email}</div>
                   ) : null}
 
@@ -66,11 +68,12 @@ const SignupForm = () => {
                     label="Password"
                     inputName="password"
                     inputType="password"
+                    onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
                     value={formik.values.password}
                   />
 
-                  {formik.errors.password ? (
+                  {(formik.errors.password && formik.touched.password) ? (
                     <div>{formik.errors.password}</div>
                   ) : null}
 
