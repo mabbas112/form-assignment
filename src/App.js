@@ -12,6 +12,13 @@ import Categories from "./Components/admin/dashboard/categories";
 import NewCategoryForm from "./Components/admin/dashboard/categories/newCategoryForm";
 import ProductForm from "./Components/admin/dashboard/products/productForm";
 import Products from "./Components/admin/dashboard/products";
+import DefaultDashBoard from "./Components/dashboard";
+import CartItems from "./Components/dashboard/cartItems";
+import ProductDetail from "./Components/dashboard/productDetail";
+import CategoryProducts from "./Components/dashboard/categoryProducts";
+import GenericProducts from "./Components/dashboard/products";
+
+
 
 function App() {
   const dispatch = useAppDispatch();
@@ -30,11 +37,20 @@ function App() {
     dispatch(setUsersAction());
   }, [dispatch])
 
+
   return (
     <Fragment>
       {isAuthenticated && <button onClick={signoutHandler}>Sign out</button>}
       <Routes>
 
+
+        <Route path="/" element={<DefaultDashBoard />} >
+          <Route path="" element={<GenericProducts/>} />
+        <Route path="cartitems" element={<CartItems />} />
+        <Route path="productdetail/:productid" element={<ProductDetail/>} />
+        <Route path="/:category" element={<CategoryProducts/>} />
+        </Route>
+        
         {/* ADMIN ROUTES */}
         <Route path="/admin" element={<AdminSigninForm />}>
           <Route path="categories" element={<Categories />} />
@@ -45,7 +61,9 @@ function App() {
           <Route path="*" element={<h1>Page not found</h1>} />
         </Route>
 
-        <Route path="/signup" exact element={<SignupForm />} />
+
+        <Route path="/signup" exact element={<SignupForm />} >
+        </Route>
         <Route path="/signin" exact element={<SigninForm />} />
 
       </Routes>

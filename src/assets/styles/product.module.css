@@ -1,7 +1,6 @@
 
 .section{
     width: 200px;
-    height: 500px;
     border: 1px solid rgb(171, 140, 140);
     border-radius: 20px;
     box-shadow: 5px 10px rgb(238, 232, 232);
@@ -13,23 +12,29 @@
 
 .section img{
     height: 60%;
-    border: 1px solid red;
     width: 200px;
     border-radius: 20px;
 }
-.section h2{
+.section h1{
+    color: brown;
     margin-bottom: 5px;
 }
 .section span{
     margin-bottom: 5px;
 }
+.section p{
+    font-style: italic;
+}
 .section button{
     color: white;
     background-color: rgb(163, 227, 241);
     border: 1px solid rgb(251, 226, 226);
-    border-radius: 20px;
-    padding: 5px 10px;
+    border-radius: 10px;
+    padding: 4px 8px;
+    margin-right: 5px;
 } 
 .section input{
-    width: 200px;
+    width: 100px;
+    border-radius: 5px 10px;
+    border: 1px solid black;
 }
