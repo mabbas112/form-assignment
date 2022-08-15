@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from "./App/hooks";
 import { setUsersAction } from "./App/reducers/usersSlice";
 import { Route, Routes } from "react-router-dom";
 import SigninForm from "./Components/auth/signin";
-import { selectIsUserAuthenticated, SignoutAction } from "./App/reducers/authSlice";
 import AdminSigninForm from "./Components/admin/auth/signin";
 import { setProductAction } from "./App/reducers/productsSlice";
 import { setCategoriesAction } from "./App/reducers/categorySlice";
@@ -13,20 +12,19 @@ import NewCategoryForm from "./Components/admin/dashboard/categories/newCategory
 import ProductForm from "./Components/admin/dashboard/products/productForm";
 import Products from "./Components/admin/dashboard/products";
 import DefaultDashBoard from "./Components/dashboard";
-import CartItems from "./Components/dashboard/cartItems";
-import ProductDetail from "./Components/dashboard/productDetail";
-import CategoryProducts from "./Components/dashboard/categoryProducts";
-import GenericProducts from "./Components/dashboard/products";
-
+import CartItems from "./Components/dashboard/cart/cartItems";
+import ProductDetail from "./Components/dashboard/products/productDetail";
+import CategoryProducts from "./Components/dashboard/cart/categoryProducts";
+import GenericProducts from "./Components/dashboard/products/products";
+import Collections from "./Components/dashboard/collections";
+import { selectIsUserAuthenticated } from "./App/reducers/authSlice";
+import { getCollectionsAction, setAllOrderAction } from "./App/reducers/collectionSlice";
+import Orders from "./Components/admin/dashboard/orders";
 
 
 function App() {
   const dispatch = useAppDispatch();
-  const isAuthenticated = useAppSelector(selectIsUserAuthenticated);
-
-  const signoutHandler = () => {
-    dispatch(SignoutAction())
-  }
+  const userAuthenticated = useAppSelector(selectIsUserAuthenticated);
 
   useEffect(() => {
     //Set all product to products slice
@@ -35,22 +33,28 @@ function App() {
     dispatch(setCategoriesAction());
     //Set all users to users slice
     dispatch(setUsersAction());
+    dispatch(setAllOrderAction());
+
   }, [dispatch])
+
+  useEffect(() => {
+    if (userAuthenticated)
+      dispatch(getCollectionsAction());
+  }, [userAuthenticated, dispatch])
 
 
   return (
     <Fragment>
-      {isAuthenticated && <button onClick={signoutHandler}>Sign out</button>}
       <Routes>
 
-
         <Route path="/" element={<DefaultDashBoard />} >
-          <Route path="" element={<GenericProducts/>} />
-        <Route path="cartitems" element={<CartItems />} />
-        <Route path="productdetail/:productid" element={<ProductDetail/>} />
-        <Route path="/:category" element={<CategoryProducts/>} />
+          <Route path="" element={<GenericProducts />} />
+          <Route path="collections" element={<Collections />} />
+          <Route path="cartitems" element={<CartItems />} />
+          <Route path="productdetail/:productid" element={<ProductDetail />} />
+          <Route path="/:category" element={<CategoryProducts />} />
         </Route>
-        
+
         {/* ADMIN ROUTES */}
         <Route path="/admin" element={<AdminSigninForm />}>
           <Route path="categories" element={<Categories />} />
@@ -58,13 +62,13 @@ function App() {
           <Route path="products" element={<Products />} />
           <Route path="products/:productid" element={<ProductForm />} />
           <Route path="newproduct" element={<ProductForm />} />
+          <Route path="orders" element={<Orders />} />
           <Route path="*" element={<h1>Page not found</h1>} />
         </Route>
 
 
-        <Route path="/signup" exact element={<SignupForm />} >
-        </Route>
-        <Route path="/signin" exact element={<SigninForm />} />
+        <Route path="/signup" element={<SignupForm />} />
+        <Route path="/signin" element={<SigninForm />} />
 
       </Routes>
     </Fragment>

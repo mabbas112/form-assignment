@@ -3,6 +3,7 @@ export const categoriesApi = 'categories.json'
 export const categoryApi = 'categories/'
 export const productsApi = 'products.json'
 export const productApi = 'products/'
+export const ordersApi = 'orders.json'
 
 
 export const firebaseURL = process.env.REACT_APP_FIREBASE_KEY

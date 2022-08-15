@@ -19,6 +19,7 @@ export const setProductsService = async () => {
 }
 
 const productId = (product) => productApi + product.id + '.json';
+
 export const editProductService = async (product) => {
     try {
         const { data } = await http.put(productId(product), { ...product });

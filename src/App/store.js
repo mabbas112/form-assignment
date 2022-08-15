@@ -7,6 +7,7 @@ import CategoriesReducer from './reducers/categorySlice'
 import CartReducer from './reducers/cartSlice'
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import CollectionsReducer from './reducers/collectionSlice'
 
 
 //redux-persisting AdminReducer
@@ -24,7 +25,8 @@ const store = configureStore({
     persistedReducer,
     ProductReducer,
     CategoriesReducer,
-    CartReducer
+    CartReducer,
+    CollectionsReducer
   },
 });
 

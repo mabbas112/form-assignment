@@ -3,7 +3,7 @@ import { authSignupService } from "../../services/authServices";
 import { addNewUser } from "./usersSlice";
 
 const defaultUser = {
-  uName: '',
+  name: '',
   email: '',
   password: '',
 };
@@ -47,6 +47,7 @@ export const { setLoading, signIn, signOut, setIsUserExist } =
 export const selectIsUserLoading = (state) => state.AuthReducer.isLoading;
 export const selectIsUserAuthenticated = (state) => state.AuthReducer.isAuthenticated;
 export const selectIsUserExist = (state) => state.AuthReducer.isUserExist;
+export const selectUser = (state) => state.AuthReducer.user;
 
 //ACTOINS
 export const SignupAction = (userObj) => async (dispatch, getState) => {
@@ -57,6 +58,7 @@ export const SignupAction = (userObj) => async (dispatch, getState) => {
   if (!isExist) {
     await authSignupService(userObj);
     dispatch(addNewUser(userObj));
+    dispatch(signIn(userObj));
   }
 
   dispatch(setIsUserExist(isExist));
@@ -72,7 +74,7 @@ export const SigninAction = (userObj) => async (dispatch, getState) => {
   );
   isExist && dispatch(signIn(userObj));
   dispatch(setLoading(false));
-  
+
 };
 
 export const SignoutAction = () => async (dispatch) => {

@@ -47,6 +47,12 @@ const Dashboard = () => {
             >
                 Add Products
             </button>
+            <button
+                style={btnStyle}
+                onClick={() => navigate('/admin/orders')}
+            >
+                Orders
+            </button>
             <Outlet />
         </Fragment>
     )

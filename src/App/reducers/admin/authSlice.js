@@ -48,4 +48,3 @@ export const AdminSigninAction = (adminObj) => async (dispatch) => {
     const isAdmin = data.email === adminObj.email && data.password === adminObj.password;
     dispatch(setSignIn({isAdmin,adminObj}));
 }
-

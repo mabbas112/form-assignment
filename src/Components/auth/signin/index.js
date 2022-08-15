@@ -6,14 +6,13 @@ import { signinFormSchema, signinFormValidation } from "./signinFormValidation";
 import { SigninAction } from "../../../App/reducers/authSlice";
 import { useAppDispatch, useAppSelector } from "../../../App/hooks";
 import { selectIsUserAuthenticated } from "../../../App/reducers/authSlice";
-
+import { useNavigate } from "react-router-dom";
 
 const SigninForm = () => {
 
-  
-
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const isAuthenticated = useAppSelector(selectIsUserAuthenticated);
+  const userAuthenticated = useAppSelector(selectIsUserAuthenticated);
 
   const formik = useFormik({
     initialValues: signinFormSchema,
@@ -23,7 +22,6 @@ const SigninForm = () => {
       formik.resetForm();
     }
   });
-
 
   return (
     <Fragment>
@@ -72,7 +70,7 @@ const SigninForm = () => {
               >
                 Sign in
               </button>
-              {isAuthenticated && <p>User is Authenticated</p>}
+              {userAuthenticated && navigate('/')}
             </div>
           </div>
         </div>
