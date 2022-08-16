@@ -39,12 +39,13 @@ export default authSlice.reducer;
 export const { setLoading, setSignIn, setSignOut } = authSlice.actions;
 
 //SELECTORS
-export const selectIsAuthenticated = (state) => state.persistedReducer.isAuthenticated;
+export const selectIsAuthenticated = (state) => state.persistedAdminReducer.isAuthenticated;
 export const selectAdmin = (state) => state.persistedReducer.admin;
 
 //ACTOIN CREATORS
 export const AdminSigninAction = (adminObj) => async (dispatch) => {
-    const data = await AdminSigninService();
-    const isAdmin = data.email === adminObj.email && data.password === adminObj.password;
-    dispatch(setSignIn({isAdmin,adminObj}));
+    const data = await AdminSigninService(adminObj);
+    console.log(data);
+    // const isAdmin = data.email === adminObj.email && data.password === adminObj.password;
+    // dispatch(setSignIn({isAdmin,adminObj}));
 }

@@ -44,10 +44,10 @@ export const { setLoading, signIn, signOut, setIsUserExist } =
   authSlice.actions;
 
 //SELECTORS
-export const selectIsUserLoading = (state) => state.AuthReducer.isLoading;
-export const selectIsUserAuthenticated = (state) => state.AuthReducer.isAuthenticated;
-export const selectIsUserExist = (state) => state.AuthReducer.isUserExist;
-export const selectUser = (state) => state.AuthReducer.user;
+export const selectIsUserLoading = (state) => state.persistedUserAuthReducer.isLoading;
+export const selectIsUserAuthenticated = (state) => state.persistedUserAuthReducer.isAuthenticated;
+export const selectIsUserExist = (state) => state.persistedUserAuthReducer.isUserExist;
+export const selectUser = (state) => state.persistedUserAuthReducer.user;
 
 //ACTOINS
 export const SignupAction = (userObj) => async (dispatch, getState) => {

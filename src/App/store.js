@@ -10,19 +10,25 @@ import storage from "redux-persist/lib/storage";
 import CollectionsReducer from './reducers/collectionSlice'
 
 
-//redux-persisting AdminReducer
-const persistConfig = {
+// redux-persisting AdminReducer
+const persistAdminConfig = {
   key: 'root',
   storage
 }
-export const persistedReducer = persistReducer(persistConfig, AdminReducer)
+const persistUserConfig ={
+  key: 'user',
+  storage
+}
+
+export const persistedAdminReducer = persistReducer(persistAdminConfig, AdminReducer)
+export const persistedUserAuthReducer = persistReducer(persistUserConfig, AuthReducer)
 
 
 const store = configureStore({
   reducer: {
-    AuthReducer,
+    persistedUserAuthReducer,
     UsersReducer,
-    persistedReducer,
+    persistedAdminReducer,
     ProductReducer,
     CategoriesReducer,
     CartReducer,
