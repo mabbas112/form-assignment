@@ -1,14 +1,15 @@
 import http from '../httpServices'
-// import { adminApi } from "../constants/adminConstants";
-
-const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDvQnkBC1XhcOeYlW1OiY6eT1SiDDrTJnw'
+import { signInUrl } from '../constants/constants';
 
 export const AdminSigninService = async (adminObj) => {
     try {
-        const data = await http.get(url);
-        console.log(data);
+        const { data } = await http.post(signInUrl, {
+          email: adminObj.email,
+          password: adminObj.password,
+          returnSecureToken: true
+        });
         return Promise.resolve(data);
-    } catch (error) {
-        return Promise.resolve(null)
-    }
+      } catch (error) {
+        return Promise.resolve(error.response.status)
+      }
 }; 

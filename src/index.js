@@ -5,18 +5,14 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import store, { persistor } from "./App/store";
-import { PersistGate } from "redux-persist/integration/react";
-
+import store from "./App/store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </PersistGate>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>
 );
 
@@ -24,3 +20,7 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+// import { PersistGate } from "redux-persist/integration/react";
+/* <PersistGate loading={null} persistor={persistor}> */
+/* </PersistGate> */

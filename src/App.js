@@ -1,7 +1,6 @@
 import { Fragment, useEffect } from "react";
 import SignupForm from "./Components/auth/signup";
 import { useAppDispatch, useAppSelector } from "./App/hooks";
-import { setUsersAction } from "./App/reducers/usersSlice";
 import { Route, Routes } from "react-router-dom";
 import SigninForm from "./Components/auth/signin";
 import AdminSigninForm from "./Components/admin/auth/signin";
@@ -15,7 +14,7 @@ import DefaultDashBoard from "./Components/dashboard";
 import CartItems from "./Components/dashboard/cart/cartItems";
 import ProductDetail from "./Components/dashboard/products/productDetail";
 import CategoryProducts from "./Components/dashboard/cart/categoryProducts";
-import GenericProducts from "./Components/dashboard/products/products";
+import GenericProducts from "./Components/dashboard/products";
 import Collections from "./Components/dashboard/collections";
 import { selectIsUserAuthenticated } from "./App/reducers/authSlice";
 import { getCollectionsAction, setAllOrderAction } from "./App/reducers/collectionSlice";
@@ -34,20 +33,18 @@ function App() {
     //Set all categories to categories slice
     dispatch(setCategoriesAction());
     //Set all users to users slice
-    dispatch(setUsersAction());
     dispatch(setAllOrderAction());
 
-  }, [dispatch])
-
-  useEffect(() => {
-    if (userAuthenticated)
+    if (userAuthenticated === localStorage.getItem('token'))
       dispatch(getCollectionsAction());
-  }, [userAuthenticated, dispatch])
+
+  }, [dispatch, userAuthenticated])
 
 
   return (
     <Fragment>
       <Routes>
+
 
         <Route path="/" element={<DefaultDashBoard />} >
           <Route path="" element={<GenericProducts />} />

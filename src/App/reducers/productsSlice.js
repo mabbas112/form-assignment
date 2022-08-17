@@ -4,7 +4,6 @@ import { addProductService, setProductsService, editProductService, deleteProduc
 const defaultState = {
     products: [],
     isLoading: false,
-    productId: 1
 }
 
 const productsSlice = createSlice({
@@ -21,11 +20,7 @@ const productsSlice = createSlice({
             state.products = [...state.products, action.payload]
         },
         editProduct: (state, action) => {
-            state.products = state.products.map((product) => {
-                if (product.id === action.payload.id)
-                    return action.payload
-                else return product;
-            })
+            state.products = state.products.map(product => product.id === action.payload.id ? action.payload : product)
         },
         deleteProduct: (state, action) => {
             state.products = [...state.products.filter((product) => product.id !== action.payload.id)]
@@ -45,15 +40,15 @@ export const selectIsLoading = (state) => state.ProductReducer.isLoading;
 //ACTION CREATOR
 export const addProductAction = (product) => async (dispatch) => {
     dispatch(setIsLoading(true))
-    const data = await addProductService(product);
-    dispatch(setNewProduct({ ...product, id: data.name }))
+    const addedProduct = await addProductService(product);
+    dispatch(setNewProduct({ ...product, id: addedProduct.name }))
     dispatch(setIsLoading(false))
 }
 
 export const setProductAction = () => async (dispatch) => {
     dispatch(setIsLoading(true));
     const data = await setProductsService();
-    dispatch(setProducts(transformIntoProduct(data)));
+    dispatch(setProducts(transformedProducts(data)));
     dispatch(setIsLoading(false));
 }
 export const editProductAction = (product) => async (dispatch) => {
@@ -66,9 +61,8 @@ export const deleteProductAction = (product) => async (dispatch) => {
 }
 
 
-const transformIntoProduct = (data) => {
+const transformedProducts = (data) => {
     const productIDs = Object.keys(data);
     const productData = Object.values(data);
-    const products = productData.map((product, index) => ({ ...product, id: productIDs[index] }));
-    return products
+    return productData.map((product, index) => ({ ...product, id: productIDs[index] }));
 }

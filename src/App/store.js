@@ -1,34 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import AuthReducer from "./reducers/authSlice";
-import UsersReducer from './reducers/usersSlice'
+import UserAuthReducer from "./reducers/authSlice";
 import AdminReducer from './reducers/admin/authSlice'
 import ProductReducer from './reducers/productsSlice'
 import CategoriesReducer from './reducers/categorySlice'
 import CartReducer from './reducers/cartSlice'
-import { persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage";
 import CollectionsReducer from './reducers/collectionSlice'
-
-
-// redux-persisting AdminReducer
-const persistAdminConfig = {
-  key: 'root',
-  storage
-}
-const persistUserConfig ={
-  key: 'user',
-  storage
-}
-
-export const persistedAdminReducer = persistReducer(persistAdminConfig, AdminReducer)
-export const persistedUserAuthReducer = persistReducer(persistUserConfig, AuthReducer)
-
 
 const store = configureStore({
   reducer: {
-    persistedUserAuthReducer,
-    UsersReducer,
-    persistedAdminReducer,
+    UserAuthReducer,
+    AdminReducer,
     ProductReducer,
     CategoriesReducer,
     CartReducer,
@@ -36,5 +17,25 @@ const store = configureStore({
   },
 });
 
-export const persistor = persistStore(store);
 export default store;
+
+
+
+
+//REDUX-PERSIST LIBRARY
+
+// import { persistReducer, persistStore } from "redux-persist";
+// import storage from "redux-persist/lib/storage";
+// redux-persisting AdminReducer
+// const persistAdminConfig = {
+//   key: 'root',
+//   storage
+// }
+// const persistUserConfig ={
+//   key: 'user',
+//   storage
+// }
+// export const persistedAdminReducer = persistReducer(persistAdminConfig, AdminReducer)
+// export const persistedUserAuthReducer = persistReducer(persistUserConfig, AuthReducer)
+
+// export const persistor = persistStore(store);

@@ -1,22 +1,17 @@
 import { Fragment } from "react";
 import { SignupAction, selectIsUserAuthenticated } from "../../../App/reducers/authSlice";
 import { useAppDispatch, useAppSelector } from "../../../App/hooks";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import InputField from "../InputField";
 import { useFormik } from "formik";
 import { signupFormSchema, signupFormValidation } from "./signupFormValidation";
+import DefaultDashBoard from "../../dashboard";
 
 
 const SignupForm = () => {
 
   const dispatch = useAppDispatch();
   const userAuthenticated = useAppSelector(selectIsUserAuthenticated);
-  const navigate = useNavigate()
-
-  // const isUserExist = useAppSelector(selectIsUserExist);
-  // const isUserExistMessage = isUserExist && (
-  //   <p style={{ color: "black" }}>User already exist</p>
-  // );
 
   const formik = useFormik({
     initialValues: signupFormSchema,
@@ -104,7 +99,7 @@ const SignupForm = () => {
           </div>
         </div>
       </form>
-      {userAuthenticated && navigate('/')}
+      {userAuthenticated && <DefaultDashBoard />}
     </Fragment>
   );
 };

@@ -8,7 +8,7 @@ const defaultState = {
         email: '',
         password: ''
     },
-    isAuthenticated: false,
+    isAuthenticated: localStorage.getItem('admin'),
     isLoading: false
 }
 
@@ -20,12 +20,12 @@ const authSlice = createSlice({
             state.isLoading = action.payload;
         },
         setSignIn: (state, action) => {
-            const {isAdmin , adminObj} = action.payload;
-            state.isAuthenticated = isAdmin;
-            state.admin = adminObj;
+            const {admin , idToken} = action.payload;
+            state.isAuthenticated = idToken;
+            state.admin = admin;
         },
         setSignOut: (state, action) => {
-            state.isAuthenticated = false;
+            state.isAuthenticated = null;
             state.admin = null;
         },
     }
@@ -39,13 +39,22 @@ export default authSlice.reducer;
 export const { setLoading, setSignIn, setSignOut } = authSlice.actions;
 
 //SELECTORS
-export const selectIsAuthenticated = (state) => state.persistedAdminReducer.isAuthenticated;
-export const selectAdmin = (state) => state.persistedReducer.admin;
+export const selectIsAuthenticated = (state) => state.AdminReducer.isAuthenticated;
+export const selectAdmin = (state) => state.AdminReducer.admin;
 
 //ACTOIN CREATORS
 export const AdminSigninAction = (adminObj) => async (dispatch) => {
-    const data = await AdminSigninService(adminObj);
-    console.log(data);
-    // const isAdmin = data.email === adminObj.email && data.password === adminObj.password;
-    // dispatch(setSignIn({isAdmin,adminObj}));
+
+    const response = await AdminSigninService(adminObj);
+    if (response !== 400) {
+        dispatch(setSignIn({ admin: adminObj, idToken: response.idToken }))
+        localStorage.setItem('admin', response.idToken)
+      } else {
+        alert('check credentials,otherwise create account')
+      }
+}
+
+export const AdminSignoutAction = () =>(dispatch) =>{
+    dispatch(setSignOut());
+    localStorage.removeItem('admin');
 }

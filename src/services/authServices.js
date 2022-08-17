@@ -1,20 +1,28 @@
 import http from "./httpServices";
-import { userApi } from "./constants/constants";
+import { signUpUrl, signInUrl} from "./constants/constants";
 
 export const authSignupService = async (userObj) => {
   try {
-    const { data } = await http.post(userApi, userObj);
+    const { data } = await http.post(signUpUrl, {
+      email: userObj.email,
+      password: userObj.password,
+      returnSecureToken: true
+    });
     return Promise.resolve(data);
   } catch (error) {
-    return Promise.resolve(null)
+    return Promise.resolve(error.response.status)
   }
 };
 
-export const authSigninService = async () => {
+export const authSigninService = async (userObj) => {
   try {
-    const { data } = await http.get(userApi);
-    return data;
+    const { data } = await http.post(signInUrl, {
+      email: userObj.email,
+      password: userObj.password,
+      returnSecureToken: true
+    });
+    return Promise.resolve(data);
   } catch (error) {
-    return Promise.resolve(null)
+    return Promise.resolve(error.response.status)
   }
 };

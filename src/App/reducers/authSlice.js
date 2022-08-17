@@ -1,17 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { authSignupService } from "../../services/authServices";
-import { addNewUser } from "./usersSlice";
+import { authSignupService, authSigninService } from "../../services/authServices";
 
 const defaultUser = {
   name: '',
-  email: '',
+  email: localStorage.getItem('user'),
   password: '',
 };
 
 const defaultState = {
   user: defaultUser,
   isLoading: false,
-  isAuthenticated: false,
+  isAuthenticated: localStorage.getItem('token'),
   isUserExist: false,
 };
 
@@ -23,11 +22,11 @@ const authSlice = createSlice({
       state.isLoading = action.payload;
     },
     signIn: (state, action) => {
-      state.user = action.payload;
-      state.isAuthenticated = true;
+      state.user = action.payload.user;
+      state.isAuthenticated = action.payload.idToken;
     },
     signOut: (state, action) => {
-      state.isAuthenticated = false;
+      state.isAuthenticated = null;
       state.user = null;
     },
     setIsUserExist: (state, action) => {
@@ -44,40 +43,48 @@ export const { setLoading, signIn, signOut, setIsUserExist } =
   authSlice.actions;
 
 //SELECTORS
-export const selectIsUserLoading = (state) => state.persistedUserAuthReducer.isLoading;
-export const selectIsUserAuthenticated = (state) => state.persistedUserAuthReducer.isAuthenticated;
-export const selectIsUserExist = (state) => state.persistedUserAuthReducer.isUserExist;
-export const selectUser = (state) => state.persistedUserAuthReducer.user;
+export const selectIsUserLoading = (state) => state.UserAuthReducer.isLoading;
+export const selectIsUserAuthenticated = (state) => state.UserAuthReducer.isAuthenticated;
+export const selectIsUserExist = (state) => state.UserAuthReducer.isUserExist;
+export const selectUser = (state) => state.UserAuthReducer.user;
 
 //ACTOINS
-export const SignupAction = (userObj) => async (dispatch, getState) => {
+export const SignupAction = (userObj) => async (dispatch) => {
 
   dispatch(setLoading(true));
-  const users = getState().UsersReducer.users;
-  const isExist = users.some((user) => user.email === userObj.email);
-  if (!isExist) {
-    await authSignupService(userObj);
-    dispatch(addNewUser(userObj));
-    dispatch(signIn(userObj));
+  const response = await authSignupService(userObj);
+  if (response !== 400) {
+    dispatch(signIn({ user: userObj, idToken: response.idToken }))
+    localStorage.setItem('token', response.idToken)
+    localStorage.setItem('user', userObj.email);
+  } else {
+    alert('User already exist')
   }
 
-  dispatch(setIsUserExist(isExist));
   dispatch(setLoading(false));
+
 };
 
-export const SigninAction = (userObj) => async (dispatch, getState) => {
+export const SigninAction = (userObj) => async (dispatch) => {
 
   dispatch(setLoading(true));
-  const users = getState().UsersReducer.users;
-  const isExist = users.some(
-    (user) => user.email === userObj.email && user.password === userObj.password
-  );
-  isExist && dispatch(signIn(userObj));
+  const response = await authSigninService(userObj);
+
+  if (response !== 400) {
+    dispatch(signIn({ user: userObj, idToken: response.idToken }))
+    localStorage.setItem('token', response.idToken)
+    localStorage.setItem('user', userObj.email)
+  } else {
+    alert('check credentials,otherwise create account')
+  }
+
   dispatch(setLoading(false));
 
 };
 
 export const SignoutAction = () => async (dispatch) => {
   dispatch(signOut(null));
+  localStorage.removeItem('token');
+  localStorage.removeItem('user')
 };
 

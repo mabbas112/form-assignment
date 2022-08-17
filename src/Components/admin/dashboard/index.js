@@ -1,11 +1,9 @@
 import { Fragment } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../App/hooks";
-import { setSignOut } from "../../../App/reducers/admin/authSlice";
-import Summary from "./summary";
+import { AdminSignoutAction } from "../../../App/reducers/admin/authSlice";
 import { selectIsAuthenticated } from "../../../App/reducers/admin/authSlice";
 import { useAppSelector } from "../../../App/hooks";
-// import AdminSigninForm from "../auth/signin";
 
 const btnStyle = {
     padding: 10, border: "1px solid black", margin: 20, borderRadius: 15
@@ -27,7 +25,7 @@ const Dashboard = () => {
                 <div>
                     <button
                         style={btnStyle}
-                        onClick={() => dispatch(setSignOut())}
+                        onClick={() => dispatch(AdminSignoutAction())}
                     >
                         Sign Out
                     </button>
@@ -52,7 +50,8 @@ const Dashboard = () => {
                     >
                         Orders
                     </button>
-                    {window.location.pathname === '/admin' ? <Summary /> : <Outlet />}
+                    
+                    <Outlet />
                 </div>
 
                 : <button
