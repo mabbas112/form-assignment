@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../App/hooks";
-import { AdminSignoutAction } from "../../../App/reducers/admin/authSlice";
-import { selectIsAuthenticated } from "../../../App/reducers/admin/authSlice";
-import { useAppSelector } from "../../../App/hooks";
+import { useAppDispatch } from "../../../app/hooks";
+import { AdminSignoutAction } from "../../../app/reducers/admin/authSlice";
+import { selectIsAuthenticated } from "../../../app/reducers/admin/authSlice";
+import { useAppSelector } from "../../../app/hooks";
 
 const btnStyle = {
     padding: 10, border: "1px solid black", margin: 20, borderRadius: 15
@@ -50,8 +50,8 @@ const Dashboard = () => {
                     >
                         Orders
                     </button>
-                    
-                    <Outlet />
+
+                     <Outlet />
                 </div>
 
                 : <button

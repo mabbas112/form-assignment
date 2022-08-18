@@ -21,6 +21,7 @@ export const authSigninService = async (userObj) => {
       password: userObj.password,
       returnSecureToken: true
     });
+    console.log(data)
     return Promise.resolve(data);
   } catch (error) {
     return Promise.resolve(error.response.status)

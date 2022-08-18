@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import InputField from "../InputField";
 import { useFormik } from "formik";
 import { signinFormSchema, signinFormValidation } from "./signinFormValidation";
-import { SigninAction } from "../../../App/reducers/authSlice";
-import { useAppDispatch } from "../../../App/hooks";
+import { SigninAction } from "../../../app/reducers/authSlice";
+import { useAppDispatch } from "../../../app/hooks";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const SigninForm = () => {
-// eslint-disable-next-line
+  // eslint-disable-next-line
   const [search, setSearch] = useSearchParams()
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -18,7 +18,6 @@ const SigninForm = () => {
     initialValues: signinFormSchema,
     validate: signinFormValidation,
     onSubmit: (values) => {
-
       dispatch(SigninAction(values));
       search.get('go') === 'cartitems' ? navigate('/cartitems') : navigate('/')
       formik.resetForm();
